@@ -7,6 +7,14 @@ var session = require('express-session');
 var passport = require('passport');
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport);
+var mongoose = require("mongoose");
+var Post = require("./models/post");
+var User = require("./models/user");
+var index = require("./routes/index");
+
+
+mongoose.connect("mongodb://localhost/chirp");
+
 
 var app = express();
 
@@ -30,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/', index);
 app.use('/api', api);
 app.use('/auth', authenticate);
 
